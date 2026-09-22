@@ -69,13 +69,18 @@ Copy `.env.example` to `.env.local` and fill in values as needed:
   environment will still build without this set, but real canonical URLs,
   the sitemap, and Open Graph tags won't be correct until it points at the
   real deployed domain.
-- `RESEND_API_KEY` — reserved for a future email/CRM integration on the
-  contact form (`app/api/contact/route.ts`). The route currently validates
-  and accepts submissions but does not send email; wiring in Resend (or any
-  other provider) is a follow-up, not part of this build.
+- `RESEND_API_KEY` / `RESEND_EMAIL_FROM` — required for the contact form
+  (`app/api/contact/route.ts`) to actually send email via
+  [Resend](https://resend.com). `RESEND_EMAIL_FROM` must be an address on a
+  domain verified in your Resend account. Submissions are emailed to the
+  address in `content/company.ts` (`company.email`), with the sender's own
+  address set as the reply-to, so replying goes straight back to them. If
+  either variable is missing, the form still validates input normally but
+  responds with a clear error instead of a false "sent" success.
 
-Neither variable is required for `npm run dev`/`npm run build` to succeed —
-they only affect metadata correctness and the (not-yet-wired) email send.
+None of these variables are required for `npm run dev`/`npm run build` to
+succeed — they only affect metadata correctness and whether the contact
+form can actually send email.
 
 ## Docker
 
@@ -89,8 +94,8 @@ contains the minimal server bundle plus `public/` and `.next/static`, not
 `node_modules`) and serves it on port 3000. To pass environment variables
 through, either export them in your shell before running compose or add a
 local (untracked) `.env` file — `docker-compose.yml` reads
-`NEXT_PUBLIC_SITE_URL` and `RESEND_API_KEY` from the environment with the
-same defaults as above.
+`NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, and `RESEND_EMAIL_FROM` from the
+environment with the same defaults as above.
 
 To build the image without compose:
 
