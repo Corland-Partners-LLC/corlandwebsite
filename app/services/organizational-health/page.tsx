@@ -43,7 +43,7 @@ export default function OrganizationalHealthServicePage() {
 
       <section className="py-12 sm:py-16">
         <Container className="max-w-3xl">
-          <SectionHeading kicker="Service" heading={service.title} />
+          <SectionHeading level="h1" kicker="Service" heading={service.title} />
           <p className="mt-8 font-body text-lg leading-relaxed text-navy-800">
             {service.description}
           </p>

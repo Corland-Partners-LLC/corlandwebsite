@@ -26,13 +26,14 @@ export default function BusinessPillarsPage() {
       <section className="py-12">
         <Container>
           <SectionHeading
+            level="h1"
             kicker="Business Pillars"
             heading="Four Pillars of a Healthy Business"
             subhead={company.strategyIntro}
           />
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {pillars.map((pillar, index) => (
-              <PillarCard key={pillar.slug} index={index} {...pillar} />
+              <PillarCard key={pillar.slug} index={index} headingLevel="h2" {...pillar} />
             ))}
           </div>
         </Container>

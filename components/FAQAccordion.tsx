@@ -5,11 +5,20 @@ import { faq as defaultFaq, type FaqItem } from "@/content/faq";
 
 type FAQAccordionProps = {
   items?: FaqItem[];
+  /** Heading level wrapping each question trigger. Defaults to "h3" (used
+   * under an "h2" SectionHeading, e.g. the homepage's FAQ section). Pass
+   * "h2" when the accordion sits directly under a page's "h1" with no
+   * intervening heading, such as the standalone /faq page. */
+  headingLevel?: "h2" | "h3";
 };
 
-export default function FAQAccordion({ items = defaultFaq }: FAQAccordionProps) {
+export default function FAQAccordion({
+  items = defaultFaq,
+  headingLevel = "h3",
+}: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const uid = useId();
+  const Heading = headingLevel;
 
   return (
     <div className="divide-y divide-navy-100 rounded-md border border-navy-100 bg-white">
@@ -20,7 +29,7 @@ export default function FAQAccordion({ items = defaultFaq }: FAQAccordionProps) 
 
         return (
           <div key={item.question}>
-            <h3>
+            <Heading>
               <button
                 id={buttonId}
                 type="button"
@@ -39,7 +48,7 @@ export default function FAQAccordion({ items = defaultFaq }: FAQAccordionProps) 
                   +
                 </span>
               </button>
-            </h3>
+            </Heading>
             {/* grid-rows 0fr -> 1fr animates height to fit content of any
                 length without a hardcoded max-height, and collapses to a
                 snap open/close under prefers-reduced-motion (see globals.css). */}

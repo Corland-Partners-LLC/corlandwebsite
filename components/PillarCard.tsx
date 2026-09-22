@@ -1,10 +1,24 @@
 import Link from "next/link";
 import type { Pillar } from "@/content/pillars";
 
-type PillarCardProps = Pillar & { index?: number };
+type PillarCardProps = Pillar & {
+  index?: number;
+  /** Heading level for the card title. Defaults to "h3" (cards nested under
+   * an "h2" SectionHeading). Pass "h2" when the card grid sits directly
+   * under a page's "h1" with no intervening heading, to avoid skipping a
+   * level. */
+  headingLevel?: "h2" | "h3";
+};
 
-export default function PillarCard({ slug, title, teaser, index }: PillarCardProps) {
+export default function PillarCard({
+  slug,
+  title,
+  teaser,
+  index,
+  headingLevel = "h3",
+}: PillarCardProps) {
   const number = typeof index === "number" ? String(index + 1).padStart(2, "0") : null;
+  const Heading = headingLevel;
 
   return (
     <Link
@@ -16,9 +30,9 @@ export default function PillarCard({ slug, title, teaser, index }: PillarCardPro
           Pillar {number}
         </span>
       ) : null}
-      <h3 className="mt-3 font-heading text-xl font-bold text-navy-900">
+      <Heading className="mt-3 font-heading text-xl font-bold text-navy-900">
         {title}
-      </h3>
+      </Heading>
       <p className="mt-3 line-clamp-4 font-body text-sm leading-relaxed text-navy-700">
         {teaser}
       </p>

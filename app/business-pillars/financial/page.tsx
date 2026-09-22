@@ -36,7 +36,7 @@ export default function FinancialPillarPage() {
 
       <section className="py-12">
         <Container className="max-w-3xl">
-          <SectionHeading kicker="Business Pillar" heading={pillar.title} />
+          <SectionHeading level="h1" kicker="Business Pillar" heading={pillar.title} />
           <div className="mt-8">
             <PillarBody blocks={pillar.body} />
           </div>

@@ -42,12 +42,13 @@ export default function FAQPage() {
       <section className="py-12">
         <Container className="max-w-3xl">
           <SectionHeading
+            level="h1"
             kicker="FAQ"
             heading="Frequently Asked Questions"
             align="center"
           />
           <div className="mt-10">
-            <FAQAccordion items={faq} />
+            <FAQAccordion items={faq} headingLevel="h2" />
           </div>
         </Container>
       </section>

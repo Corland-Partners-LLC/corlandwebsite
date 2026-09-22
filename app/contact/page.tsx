@@ -24,6 +24,7 @@ export default function ContactPage() {
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           <div>
             <SectionHeading
+              level="h1"
               kicker="Contact"
               heading="Let's Talk"
               subhead="Send us a message and we'll be in touch, or book a consultation directly on our calendar."
