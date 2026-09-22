@@ -5,6 +5,7 @@ import SectionHeading from "@/components/SectionHeading";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PillarBody from "@/components/PillarBody";
 import PillarDiagram from "@/components/PillarDiagram";
+import MarketingFlywheel from "@/components/MarketingFlywheel";
 import PillarCrossLinks from "@/components/PillarCrossLinks";
 import CTASection from "@/components/CTASection";
 import { getPillarBySlug } from "@/content/pillars";
@@ -42,7 +43,17 @@ export default function MarketingSalesPillarPage() {
             <PillarDiagram activeIndex={3} label="MARKETING & SALES MODEL" />
           </div>
           <div className="mt-10">
-            <PillarBody blocks={pillar.body} />
+            <PillarBody blocks={pillar.body.slice(0, 4)} />
+          </div>
+        </Container>
+
+        <Container className="mt-10">
+          <MarketingFlywheel />
+        </Container>
+
+        <Container className="max-w-3xl">
+          <div className="mt-10">
+            <PillarBody blocks={pillar.body.slice(4)} />
           </div>
         </Container>
       </section>
