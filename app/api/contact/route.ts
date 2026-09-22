@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
   try {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
-      from: `Corland Partners Website <${from}>`,
+      from,
       to: company.email,
       replyTo: email,
       subject: `New contact form submission from ${name}`,
