@@ -37,7 +37,45 @@ function escapeHtml(value: string): string {
     .replace(/'/g, "&#39;");
 }
 
-/** Plain-text fallback for email clients that don't render HTML. */
+/** Shared branded shell (logo header + footer) every notification email uses. */
+function emailLayout({
+  logoUrl,
+  bodyHtml,
+  footerText,
+}: {
+  logoUrl: string;
+  bodyHtml: string;
+  footerText: string;
+}): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+  <body style="margin: 0; padding: 0; background-color: #f3f7fa;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f7fa; padding: 32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e7eef4;">
+            <tr>
+              <td style="background-color: #ffffff; padding: 24px 32px; border-bottom: 3px solid #105594;">
+                <img src="${logoUrl}" alt="${escapeHtml(company.name)}" height="36" style="display: block; height: 36px; width: auto;" />
+              </td>
+            </tr>
+            ${bodyHtml}
+            <tr>
+              <td style="padding: 16px 32px; background-color: #f3f7fa; border-top: 1px solid #e7eef4;">
+                <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #5888b4;">
+                  ${footerText}
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
+/** Plain-text fallback for the internal "new submission" notification. */
 export function contactEmailText({
   name,
   email,
@@ -59,7 +97,7 @@ export function contactEmailText({
     .join("\n");
 }
 
-/** Branded HTML version, matching the site's navy/teal design system. */
+/** Branded HTML version of the internal "new submission" notification. */
 export function contactEmailHtml({
   name,
   email,
@@ -93,58 +131,127 @@ export function contactEmailHtml({
     )
     .join("");
 
-  return `<!DOCTYPE html>
-<html lang="en">
-  <body style="margin: 0; padding: 0; background-color: #f3f7fa;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f7fa; padding: 32px 16px;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width: 560px; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e7eef4;">
-            <tr>
-              <td style="background-color: #ffffff; padding: 24px 32px; border-bottom: 3px solid #105594;">
-                <img src="${logoUrl}" alt="${escapeHtml(company.name)}" height="36" style="display: block; height: 36px; width: auto;" />
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 28px 32px 8px;">
-                <p style="margin: 0 0 4px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2b8992;">
-                  New Website Submission
-                </p>
-                <h1 style="margin: 0 0 20px; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 800; color: #092f51;">
-                  New contact form submission from ${escapeHtml(name)}
-                </h1>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 0 32px;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                  ${rowsHtml}
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 20px 32px 28px;">
-                <p style="margin: 0 0 8px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #0b3c68;">
-                  Message
-                </p>
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5fcfd; border: 1px solid #cff0f4; border-radius: 6px;">
-                  <tr>
-                    <td style="padding: 16px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #092f51; white-space: pre-wrap;">${escapeHtml(message)}</td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding: 16px 32px; background-color: #f3f7fa; border-top: 1px solid #e7eef4;">
-                <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #5888b4;">
-                  Sent automatically from the ${escapeHtml(company.name)} website contact form. Reply to this email to respond directly to ${escapeHtml(name)}.
-                </p>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`;
+  const bodyHtml = `
+    <tr>
+      <td style="padding: 28px 32px 8px;">
+        <p style="margin: 0 0 4px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2b8992;">
+          New Website Submission
+        </p>
+        <h1 style="margin: 0 0 20px; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 800; color: #092f51;">
+          New contact form submission from ${escapeHtml(name)}
+        </h1>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0 32px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+          ${rowsHtml}
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 20px 32px 28px;">
+        <p style="margin: 0 0 8px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #0b3c68;">
+          Message
+        </p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5fcfd; border: 1px solid #cff0f4; border-radius: 6px;">
+          <tr>
+            <td style="padding: 16px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #092f51; white-space: pre-wrap;">${escapeHtml(message)}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>`;
+
+  return emailLayout({
+    logoUrl,
+    bodyHtml,
+    footerText: `Sent automatically from the ${escapeHtml(company.name)} website contact form. Reply to this email to respond directly to ${escapeHtml(name)}.`,
+  });
+}
+
+/** Plain-text fallback for the visitor-facing confirmation email. */
+export function contactConfirmationText({
+  name,
+  message,
+}: Pick<ContactEmailFields, "name" | "message">): string {
+  return [
+    `Hi ${name},`,
+    "",
+    `Thanks for reaching out to ${company.name} — we've received your message and someone will be in touch soon.`,
+    "",
+    "For your records, here's what you sent us:",
+    "",
+    `"${message}"`,
+    "",
+    `${company.name}`,
+    `${company.address.street}, ${company.address.city}, ${company.address.state} ${company.address.zip}`,
+    `${company.phone}`,
+  ].join("\n");
+}
+
+/** Branded HTML version of the visitor-facing confirmation email. */
+export function contactConfirmationHtml({
+  name,
+  message,
+  pageUrl,
+}: Pick<ContactEmailFields, "name" | "message" | "pageUrl">): string {
+  const siteUrl = resolveSiteOrigin(pageUrl);
+  const logoUrl = `${siteUrl}/images/logo/corland-partners-logo-horizontal.png`;
+
+  const bodyHtml = `
+    <tr>
+      <td style="padding: 28px 32px 8px;">
+        <p style="margin: 0 0 4px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2b8992;">
+          Message Received
+        </p>
+        <h1 style="margin: 0 0 16px; font-family: Arial, Helvetica, sans-serif; font-size: 20px; font-weight: 800; color: #092f51;">
+          Thanks for reaching out, ${escapeHtml(name)}
+        </h1>
+        <p style="margin: 0 0 20px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #092f51;">
+          We've received your message and someone from ${escapeHtml(company.name)} will be in touch soon.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0 32px 24px;">
+        <p style="margin: 0 0 8px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #0b3c68;">
+          Your message
+        </p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5fcfd; border: 1px solid #cff0f4; border-radius: 6px;">
+          <tr>
+            <td style="padding: 16px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #092f51; white-space: pre-wrap;">${escapeHtml(message)}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0 32px 28px;">
+        <table role="presentation" cellpadding="0" cellspacing="0">
+          <tr>
+            <td style="border-radius: 6px; background-color: #105594;">
+              <a href="${escapeHtml(company.bookingUrl)}" style="display: inline-block; padding: 12px 24px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.02em; color: #ffffff; text-decoration: none;">
+                Book a Consultation
+              </a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0 32px 28px; border-top: 1px solid #e7eef4;">
+        <p style="margin: 20px 0 4px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #0b3c68;">
+          ${escapeHtml(company.name)}
+        </p>
+        <p style="margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 13px; line-height: 1.6; color: #5888b4;">
+          ${escapeHtml(company.address.street)}, ${escapeHtml(company.address.city)}, ${escapeHtml(company.address.state)} ${escapeHtml(company.address.zip)}<br />
+          <a href="${escapeHtml(company.phoneHref)}" style="color: #105594; text-decoration: none;">${escapeHtml(company.phone)}</a>
+        </p>
+      </td>
+    </tr>`;
+
+  return emailLayout({
+    logoUrl,
+    bodyHtml,
+    footerText: `You're receiving this because you submitted a contact form on the ${escapeHtml(company.name)} website. If this wasn't you, you can safely ignore this email.`,
+  });
 }
