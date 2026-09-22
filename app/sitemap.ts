@@ -14,6 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: "/services", changeFrequency: "monthly", priority: 0.9 },
     { route: "/faq", changeFrequency: "monthly", priority: 0.6 },
     { route: "/contact", changeFrequency: "yearly", priority: 0.6 },
+    { route: "/privacy", changeFrequency: "yearly", priority: 0.3 },
+    { route: "/terms", changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const pillarRoutes = pillars.map((pillar) => ({

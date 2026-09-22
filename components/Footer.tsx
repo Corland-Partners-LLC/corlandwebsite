@@ -123,14 +123,28 @@ export default function Footer() {
           <p>
             &copy; {year} {company.name}. All rights reserved.
           </p>
-          <a
-            href={company.transparencyInCoverageUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-400"
-          >
-            Transparency in Coverage
-          </a>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-400"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="transition-colors hover:text-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-400"
+            >
+              Terms of Use
+            </Link>
+            <a
+              href={company.transparencyInCoverageUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-400"
+            >
+              Transparency in Coverage
+            </a>
+          </div>
         </Container>
       </div>
     </footer>
