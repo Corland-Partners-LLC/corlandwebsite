@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Hero from "@/components/Hero";
 import Container from "@/components/Container";
 import SectionHeading from "@/components/SectionHeading";
-import ImpactCard from "@/components/ImpactCard";
 import PillarCard from "@/components/PillarCard";
 import ServiceCard from "@/components/ServiceCard";
 import FAQAccordion from "@/components/FAQAccordion";
@@ -60,20 +60,31 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 4. Triple Bottom Line — a philosophy, not a set of service cards */}
+      {/* 4. Triple Bottom Line — the original site's own icon graphic,
+          referenced directly per the brand's existing visual identity */}
       <section className="bg-navy-50 py-20 sm:py-28">
         <Container>
           <SectionHeading kicker="Our Philosophy" heading="The Triple Bottom Line" align="center" />
-          <div className="relative mt-16">
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-navy-200 to-transparent sm:block"
+          <div className="mt-12 flex justify-center">
+            <Image
+              src="/images/triple-bottom-line.webp"
+              alt="Triple Bottom Line: Kingdom Impact, Social Impact, and Financial Impact"
+              width={2000}
+              height={739}
+              className="h-auto w-full max-w-4xl"
             />
-            <div className="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-8">
-              {impact.map((item, index) => (
-                <ImpactCard key={item.title} index={index} {...item} />
-              ))}
-            </div>
+          </div>
+          <div className="mt-14 grid grid-cols-1 gap-10 text-center sm:grid-cols-3 sm:text-left">
+            {impact.map((item) => (
+              <div key={item.title}>
+                <h3 className="font-heading text-lg font-bold text-navy-900">
+                  {item.title}
+                </h3>
+                <p className="mt-3 font-body text-base leading-relaxed text-navy-700">
+                  {item.body}
+                </p>
+              </div>
+            ))}
           </div>
         </Container>
       </section>
