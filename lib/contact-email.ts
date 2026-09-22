@@ -213,26 +213,13 @@ export function contactConfirmationHtml({
       </td>
     </tr>
     <tr>
-      <td style="padding: 0 32px 24px;">
+      <td style="padding: 0 32px 28px;">
         <p style="margin: 0 0 8px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; color: #0b3c68;">
           Your message
         </p>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5fcfd; border: 1px solid #cff0f4; border-radius: 6px;">
           <tr>
             <td style="padding: 16px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #092f51; white-space: pre-wrap;">${escapeHtml(message)}</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 0 32px 28px;">
-        <table role="presentation" cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="border-radius: 6px; background-color: #105594;">
-              <a href="${escapeHtml(company.bookingUrl)}" style="display: inline-block; padding: 12px 24px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.02em; color: #ffffff; text-decoration: none;">
-                Book a Consultation
-              </a>
-            </td>
           </tr>
         </table>
       </td>
