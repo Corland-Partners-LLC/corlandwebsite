@@ -56,6 +56,9 @@ export async function POST(request: NextRequest) {
 
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_EMAIL_FROM;
+  const to = process.env.CONTACT_FORM_TO_EMAIL
+    ? process.env.CONTACT_FORM_TO_EMAIL.split(",").map((address) => address.trim())
+    : company.email;
 
   if (!apiKey || !from) {
     console.error(
@@ -77,7 +80,7 @@ export async function POST(request: NextRequest) {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from,
-      to: company.email,
+      to,
       replyTo: email,
       subject: `New contact form submission from ${name}`,
       text: [
