@@ -9,6 +9,25 @@ export type ContactEmailFields = {
   pageUrl?: string;
 };
 
+/**
+ * The logo needs an absolute URL that's actually reachable right now. The
+ * NEXT_PUBLIC_SITE_URL env var is meant for canonical/SEO URLs and may
+ * point at a custom domain that isn't live yet (e.g. DNS not configured),
+ * while the deploy platform's own subdomain is what's actually serving
+ * traffic — so prefer deriving the origin from the page the form was
+ * actually submitted from, which is always the real, live domain.
+ */
+function resolveSiteOrigin(pageUrl?: string): string {
+  if (pageUrl) {
+    try {
+      return new URL(pageUrl).origin;
+    } catch {
+      // Not a valid absolute URL — fall through to the env fallback below.
+    }
+  }
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -49,8 +68,7 @@ export function contactEmailHtml({
   message,
   pageUrl,
 }: ContactEmailFields): string {
-  const siteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+  const siteUrl = resolveSiteOrigin(pageUrl);
   const logoUrl = `${siteUrl}/images/logo/corland-partners-logo-horizontal.png`;
 
   const rows = [
