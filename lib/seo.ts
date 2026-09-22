@@ -4,6 +4,16 @@ import { company } from "@/content/company";
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
 
+/** Default Open Graph / Twitter card image, shared by every page that
+ * doesn't supply its own. 1200x630 (the standard OG size), branded with
+ * the Corland Partners mark, name, and tagline. */
+const defaultOgImage = {
+  url: `${siteUrl}/images/og-default.png`,
+  width: 1200,
+  height: 630,
+  alt: `${company.name} — ${company.tagline}`,
+};
+
 type PageSeoInput = {
   /** Per-page title. The root layout's "%s | Corland Partners" template
    * applies this automatically — do not repeat the site name here. */
@@ -59,11 +69,13 @@ export function pageMetadata({ title, description, path }: PageSeoInput): Metada
       url,
       siteName: company.name,
       type: "website",
+      images: [defaultOgImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [defaultOgImage.url],
     },
   };
 }
