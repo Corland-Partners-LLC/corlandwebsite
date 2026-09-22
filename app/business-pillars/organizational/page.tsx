@@ -4,15 +4,18 @@ import Container from "@/components/Container";
 import SectionHeading from "@/components/SectionHeading";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PillarBody from "@/components/PillarBody";
+import PillarCrossLinks from "@/components/PillarCrossLinks";
 import CTASection from "@/components/CTASection";
 import { getPillarBySlug } from "@/content/pillars";
+import { pageMetadata } from "@/lib/seo";
 
 const pillar = getPillarBySlug("organizational");
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: pillar?.title ?? "Organizational Model",
-  description: pillar?.teaser,
-};
+  description: pillar?.teaser ?? "",
+  path: "/business-pillars/organizational",
+});
 
 export default function OrganizationalPillarPage() {
   if (!pillar) {
@@ -39,6 +42,8 @@ export default function OrganizationalPillarPage() {
           </div>
         </Container>
       </section>
+
+      <PillarCrossLinks currentSlug={pillar.slug} />
 
       <CTASection />
     </>

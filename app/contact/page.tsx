@@ -5,11 +5,13 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactForm from "@/components/ContactForm";
 import Button from "@/components/Button";
 import { company } from "@/content/company";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: `Get in touch with ${company.name}.`,
-};
+  description: `Get in touch with ${company.name} in Grandview, TX — send a message or book a consultation directly.`,
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

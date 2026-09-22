@@ -6,11 +6,13 @@ import PillarCard from "@/components/PillarCard";
 import CTASection from "@/components/CTASection";
 import { company } from "@/content/company";
 import { pillars } from "@/content/pillars";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Business Pillars",
   description: company.strategyIntro,
-};
+  path: "/business-pillars",
+});
 
 export default function BusinessPillarsPage() {
   return (

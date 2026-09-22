@@ -31,12 +31,14 @@ export const metadata: Metadata = {
   description: company.heroSubhead,
 };
 
-const jsonLd = {
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+
+const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: company.name,
   description: company.tagline,
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com",
+  url: siteUrl,
   email: company.email,
   telephone: company.phone,
   address: {
@@ -50,6 +52,15 @@ const jsonLd = {
   sameAs: [company.facebookUrl],
 };
 
+// Plain WebSite schema — no SearchAction, since the site has no search
+// feature and we don't want to claim functionality that doesn't exist.
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: company.name,
+  url: siteUrl,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
@@ -61,7 +72,11 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col bg-white font-body text-navy-900 antialiased">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
         <Header />
         <main className="flex-1">{children}</main>

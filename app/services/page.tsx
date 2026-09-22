@@ -6,11 +6,13 @@ import ServiceCard from "@/components/ServiceCard";
 import CTASection from "@/components/CTASection";
 import { company } from "@/content/company";
 import { services } from "@/content/services";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Suite of Services",
   description: company.servicesSubhead,
-};
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (

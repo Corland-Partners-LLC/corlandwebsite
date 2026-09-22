@@ -5,11 +5,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FAQAccordion from "@/components/FAQAccordion";
 import CTASection from "@/components/CTASection";
 import { faq } from "@/content/faq";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "FAQ",
-  description: "Frequently asked questions about Corland Partners and kingdom business.",
-};
+  description:
+    "Frequently asked questions about Corland Partners and kingdom business.",
+  path: "/faq",
+});
 
 export default function FAQPage() {
   const jsonLd = {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import Container from "@/components/Container";
 import SectionHeading from "@/components/SectionHeading";
@@ -12,6 +13,13 @@ import { impact } from "@/content/impact";
 import { pillars } from "@/content/pillars";
 import { services } from "@/content/services";
 import { faq } from "@/content/faq";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: company.tagline,
+  description: company.heroSubhead,
+  path: "/",
+});
 
 export default function HomePage() {
   return (
