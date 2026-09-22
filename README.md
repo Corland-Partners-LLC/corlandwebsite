@@ -71,11 +71,13 @@ Copy `.env.example` to `.env.local` and fill in values as needed:
   real deployed domain.
 - `RESEND_API_KEY` / `RESEND_EMAIL_FROM` — required for the contact form
   (`app/api/contact/route.ts`) to actually send email via
-  [Resend](https://resend.com). `RESEND_EMAIL_FROM` must be an address on a
-  domain verified in your Resend account. Submissions are emailed to the
-  address in `content/company.ts` (`company.email`), with the sender's own
-  address set as the reply-to, so replying goes straight back to them. If
-  either variable is missing, the form still validates input normally but
+  [Resend](https://resend.com). `RESEND_EMAIL_FROM` is passed to Resend
+  exactly as set — either a bare address (`no-reply@corlandpartners.com`)
+  or `Display Name <address>` — and its domain must be verified in your
+  Resend account either way. Submissions are emailed to the address in
+  `content/company.ts` (`company.email`), with the sender's own address
+  set as the reply-to, so replying goes straight back to them. If either
+  variable is missing, the form still validates input normally but
   responds with a clear error instead of a false "sent" success.
 
 None of these variables are required for `npm run dev`/`npm run build` to
