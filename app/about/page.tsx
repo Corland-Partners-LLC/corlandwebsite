@@ -38,8 +38,8 @@ export default function AboutPage() {
             align="center"
           />
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {impact.map((item) => (
-              <ImpactCard key={item.title} {...item} />
+            {impact.map((item, index) => (
+              <ImpactCard key={item.title} index={index} {...item} />
             ))}
           </div>
         </Container>

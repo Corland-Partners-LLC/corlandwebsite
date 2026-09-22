@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Hero from "@/components/Hero";
 import Container from "@/components/Container";
 import SectionHeading from "@/components/SectionHeading";
@@ -17,124 +16,144 @@ import { faq } from "@/content/faq";
 export default function HomePage() {
   return (
     <>
+      {/* 1. Hero */}
       <Hero />
 
-      <section className="py-20">
-        <Container className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-          <div>
-            <SectionHeading
-              kicker={company.missionIntro}
-              heading={company.missionStatement}
-            />
-            <p className="mt-6 font-body italic text-navy-700">
+      {/* 2. Philosophy / intro — editorial pull-quote treatment */}
+      <section className="py-20 sm:py-28">
+        <Container className="mx-auto max-w-3xl text-center">
+          <h2 className="font-heading text-sm font-semibold uppercase tracking-[0.25em] text-teal-700">
+            {company.missionIntro}
+          </h2>
+          <blockquote className="relative mt-8">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 select-none font-heading text-7xl leading-none text-navy-100 sm:-top-10 sm:text-8xl"
+            >
+              &ldquo;
+            </span>
+            <p className="relative font-heading text-2xl font-medium italic leading-snug text-navy-900 sm:text-3xl">
               {company.missionQuote}
             </p>
-            <p className="mt-4 font-body text-navy-700">
-              {company.missionSecondary}
-            </p>
-            <Button href="/about" variant="outline" className="mt-8">
-              About Corland Partners
-            </Button>
-          </div>
-          <div className="rounded-lg bg-navy-50 p-8">
-            <p className="font-heading text-lg font-semibold text-navy-900">
-              The Triple Bottom Line
-            </p>
-            <p className="mt-2 font-body text-sm text-navy-700">
-              Every Corland Partners engagement is measured against three
-              kinds of impact.
-            </p>
-          </div>
+          </blockquote>
+          <p className="mx-auto mt-8 max-w-xl font-body text-lg leading-relaxed text-navy-700">
+            {company.missionSecondary}
+          </p>
         </Container>
       </section>
 
-      <section className="bg-navy-50 py-20">
+      {/* 3. Sustainable Kingdom Communities — major visual moment */}
+      <section className="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 py-20 sm:py-28">
+        <Container className="mx-auto max-w-4xl text-center">
+          <span aria-hidden="true" className="mx-auto mb-8 block h-px w-16 bg-teal-400" />
+          <h2 className="font-heading text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
+            {company.missionStatement}
+          </h2>
+        </Container>
+      </section>
+
+      {/* 4. Triple Bottom Line — a philosophy, not a set of service cards */}
+      <section className="bg-navy-50 py-20 sm:py-28">
         <Container>
-          <SectionHeading
-            kicker="Triple Bottom Line"
-            heading="Kingdom, Social &amp; Financial Impact"
-            align="center"
-          />
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {impact.map((item) => (
-              <ImpactCard key={item.title} {...item} />
-            ))}
+          <SectionHeading kicker="Our Philosophy" heading="The Triple Bottom Line" align="center" />
+          <div className="relative mt-16">
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-navy-200 to-transparent sm:block"
+            />
+            <div className="grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-8">
+              {impact.map((item, index) => (
+                <ImpactCard key={item.title} index={index} {...item} />
+              ))}
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="py-20">
+      {/* 5. Four Business Pillars */}
+      <section className="py-20 sm:py-28">
         <Container>
           <SectionHeading
             kicker="Business Pillars"
             heading="Four Pillars of a Healthy Business"
             subhead={company.strategyIntro}
           />
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {pillars.map((pillar) => (
-              <PillarCard key={pillar.slug} {...pillar} />
+          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {pillars.map((pillar, index) => (
+              <PillarCard key={pillar.slug} index={index} {...pillar} />
             ))}
           </div>
           <div className="mt-10">
-            <Button href="/business-pillars" variant="primary">
+            <Button href="/business-pillars" variant="outline">
               View All Business Pillars
             </Button>
           </div>
         </Container>
       </section>
 
-      <section className="bg-navy-900 py-16 text-center">
+      <section className="bg-navy-900 py-16 sm:py-20">
         <Container>
-          <p className="mx-auto max-w-3xl font-heading text-2xl font-semibold italic text-white sm:text-3xl">
-            &ldquo;{company.focusQuote}&rdquo;
-          </p>
+          <blockquote className="mx-auto max-w-3xl text-center">
+            <p className="font-heading text-2xl font-semibold italic leading-snug text-white sm:text-3xl">
+              &ldquo;{company.focusQuote}&rdquo;
+            </p>
+          </blockquote>
         </Container>
       </section>
 
-      <section className="py-20">
+      {/* 6. Suite of Services */}
+      <section className="py-20 sm:py-28">
         <Container>
           <SectionHeading
             kicker="Suite of Services"
             heading="How We Help Kingdom Businesses Grow"
             subhead={company.servicesSubhead}
           />
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <ServiceCard key={service.slug} {...service} />
             ))}
           </div>
           <div className="mt-10">
-            <Button href="/services" variant="primary">
-              View All Services
+            <Button href="/services" variant="outline">
+              Explore Our Services
             </Button>
           </div>
         </Container>
       </section>
 
-      <section className="bg-navy-50 py-20">
-        <Container className="max-w-3xl">
-          <SectionHeading
-            kicker="FAQ"
-            heading="Frequently Asked Questions"
-            align="center"
-          />
-          <div className="mt-10">
-            <FAQAccordion items={faq} />
+      {/* 7. About teaser — editorial two-column excerpt */}
+      <section className="bg-navy-50 py-20 sm:py-28">
+        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="font-heading text-sm font-semibold uppercase tracking-widest text-teal-700">
+              About Us
+            </p>
+            <h2 className="mt-3 font-heading text-3xl font-bold leading-tight text-navy-900 sm:text-4xl">
+              {company.tagline}
+            </h2>
           </div>
-          <p className="mt-6 text-center font-body text-sm text-navy-700">
-            Have another question?{" "}
-            <Link href="/faq" className="font-semibold text-teal-700 hover:underline">
-              Visit our full FAQ page
-            </Link>{" "}
-            or{" "}
-            <Link href="/contact" className="font-semibold text-teal-700 hover:underline">
-              contact us
-            </Link>
-            .
-          </p>
+          <div className="space-y-6 font-body text-lg leading-relaxed text-navy-800">
+            <p>{company.aboutParagraphs[0]}</p>
+            <p>{company.aboutParagraphs[1]}</p>
+            <Button href="/about" variant="outline" className="mt-2">
+              Learn More About Us
+            </Button>
+          </div>
         </Container>
       </section>
 
+      {/* 8. FAQ — full accordion, same content the /faq page reuses */}
+      <section className="py-20 sm:py-28">
+        <Container className="max-w-3xl">
+          <SectionHeading kicker="FAQ" heading="Frequently Asked Questions" align="center" />
+          <div className="mt-12">
+            <FAQAccordion items={faq} />
+          </div>
+        </Container>
+      </section>
+
+      {/* 9. Final CTA / contact band */}
       <CTASection />
     </>
   );

@@ -29,8 +29,8 @@ export default function BusinessPillarsPage() {
             subhead={company.strategyIntro}
           />
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {pillars.map((pillar) => (
-              <PillarCard key={pillar.slug} {...pillar} />
+            {pillars.map((pillar, index) => (
+              <PillarCard key={pillar.slug} index={index} {...pillar} />
             ))}
           </div>
         </Container>
