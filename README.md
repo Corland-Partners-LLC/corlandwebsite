@@ -74,11 +74,17 @@ Copy `.env.example` to `.env.local` and fill in values as needed:
   [Resend](https://resend.com). `RESEND_EMAIL_FROM` is passed to Resend
   exactly as set — either a bare address (`no-reply@corlandpartners.com`)
   or `Display Name <address>` — and its domain must be verified in your
-  Resend account either way. Submissions are emailed to the address in
-  `content/company.ts` (`company.email`), with the sender's own address
-  set as the reply-to, so replying goes straight back to them. If either
-  variable is missing, the form still validates input normally but
-  responds with a clear error instead of a false "sent" success.
+  Resend account either way. The sender's own address is set as the
+  reply-to, so replying goes straight back to them. If either variable
+  is missing, the form still validates input normally but responds with
+  a clear error instead of a false "sent" success.
+- `CONTACT_FORM_TO_EMAIL` — optional. Who submissions are emailed to;
+  comma-separate multiple addresses for more than one recipient. Falls
+  back to `company.email` (`content/company.ts` — the address publicly
+  displayed on the site) if unset. Set this independently whenever the
+  internal recipient needs to differ from the publicly displayed contact
+  address (e.g. the displayed address changes hands, or submissions
+  should route to someone other than the listed contact).
 
 None of these variables are required for `npm run dev`/`npm run build` to
 succeed — they only affect metadata correctness and whether the contact
@@ -96,8 +102,9 @@ contains the minimal server bundle plus `public/` and `.next/static`, not
 `node_modules`) and serves it on port 3000. To pass environment variables
 through, either export them in your shell before running compose or add a
 local (untracked) `.env` file — `docker-compose.yml` reads
-`NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, and `RESEND_EMAIL_FROM` from the
-environment with the same defaults as above.
+`NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, `RESEND_EMAIL_FROM`, and
+`CONTACT_FORM_TO_EMAIL` from the environment with the same defaults as
+above.
 
 To build the image without compose:
 
