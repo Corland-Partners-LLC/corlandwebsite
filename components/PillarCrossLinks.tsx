@@ -1,6 +1,20 @@
+import type { ComponentType } from "react";
 import Link from "next/link";
 import Container from "./Container";
 import { pillars } from "@/content/pillars";
+import {
+  OrganizationalIcon,
+  OperationalIcon,
+  FinancialIcon,
+  MarketingSalesIcon,
+} from "./PillarIcons";
+
+const iconBySlug: Record<string, ComponentType<{ className?: string }>> = {
+  organizational: OrganizationalIcon,
+  operational: OperationalIcon,
+  financial: FinancialIcon,
+  "marketing-sales": MarketingSalesIcon,
+};
 
 /**
  * "See the other pillars" cross-link section shown at the bottom of each
@@ -28,23 +42,23 @@ export default function PillarCrossLinks({ currentSlug }: { currentSlug: string 
         </Link>
 
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {otherPillars.map((pillar, index) => (
-            <Link
-              key={pillar.slug}
-              href={`/business-pillars/${pillar.slug}`}
-              className="group flex items-center gap-4 rounded-md border border-navy-200 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-teal-500 hover:shadow-md focus-visible:-translate-y-0.5 focus-visible:border-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
-            >
-              <span
-                aria-hidden="true"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-navy-200 font-heading text-sm font-bold text-navy-500 transition-colors duration-200 group-hover:border-teal-400 group-hover:text-teal-600"
+          {otherPillars.map((pillar) => {
+            const Icon = iconBySlug[pillar.slug];
+            return (
+              <Link
+                key={pillar.slug}
+                href={`/business-pillars/${pillar.slug}`}
+                className="group flex items-center gap-4 rounded-md border border-navy-200 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-teal-500 hover:shadow-md focus-visible:-translate-y-0.5 focus-visible:border-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
               >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="font-heading text-base font-semibold text-navy-900 transition-colors duration-200 group-hover:text-teal-700">
-                {pillar.title}
-              </span>
-            </Link>
-          ))}
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-navy-200 bg-navy-50 transition-colors duration-200 group-hover:border-teal-400">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <span className="font-heading text-base font-semibold text-navy-900 transition-colors duration-200 group-hover:text-teal-700">
+                  {pillar.title}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </Container>
     </section>

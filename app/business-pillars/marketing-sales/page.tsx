@@ -4,6 +4,7 @@ import Container from "@/components/Container";
 import SectionHeading from "@/components/SectionHeading";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PillarBody from "@/components/PillarBody";
+import PillarDiagram from "@/components/PillarDiagram";
 import PillarCrossLinks from "@/components/PillarCrossLinks";
 import CTASection from "@/components/CTASection";
 import { getPillarBySlug } from "@/content/pillars";
@@ -37,7 +38,10 @@ export default function MarketingSalesPillarPage() {
       <section className="py-12">
         <Container className="max-w-3xl">
           <SectionHeading level="h1" kicker="Business Pillar" heading={pillar.title} />
-          <div className="mt-8">
+          <div className="mt-10">
+            <PillarDiagram activeIndex={3} label="MARKETING & SALES MODEL" />
+          </div>
+          <div className="mt-10">
             <PillarBody blocks={pillar.body} />
           </div>
         </Container>
