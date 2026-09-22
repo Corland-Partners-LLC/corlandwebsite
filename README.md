@@ -69,13 +69,18 @@ Copy `.env.example` to `.env.local` and fill in values as needed:
   environment will still build without this set, but real canonical URLs,
   the sitemap, and Open Graph tags won't be correct until it points at the
   real deployed domain.
-- `RESEND_API_KEY` — reserved for a future email/CRM integration on the
-  contact form (`app/api/contact/route.ts`). The route currently validates
-  and accepts submissions but does not send email; wiring in Resend (or any
-  other provider) is a follow-up, not part of this build.
+- `RESEND_API_KEY` / `RESEND_EMAIL_FROM` — required for the contact form
+  (`app/api/contact/route.ts`) to actually send email via
+  [Resend](https://resend.com). `RESEND_EMAIL_FROM` must be an address on a
+  domain verified in your Resend account. Submissions are emailed to the
+  address in `content/company.ts` (`company.email`), with the sender's own
+  address set as the reply-to, so replying goes straight back to them. If
+  either variable is missing, the form still validates input normally but
+  responds with a clear error instead of a false "sent" success.
 
-Neither variable is required for `npm run dev`/`npm run build` to succeed —
-they only affect metadata correctness and the (not-yet-wired) email send.
+None of these variables are required for `npm run dev`/`npm run build` to
+succeed — they only affect metadata correctness and whether the contact
+form can actually send email.
 
 ## Docker
 
@@ -89,8 +94,8 @@ contains the minimal server bundle plus `public/` and `.next/static`, not
 `node_modules`) and serves it on port 3000. To pass environment variables
 through, either export them in your shell before running compose or add a
 local (untracked) `.env` file — `docker-compose.yml` reads
-`NEXT_PUBLIC_SITE_URL` and `RESEND_API_KEY` from the environment with the
-same defaults as above.
+`NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY`, and `RESEND_EMAIL_FROM` from the
+environment with the same defaults as above.
 
 To build the image without compose:
 
@@ -148,10 +153,14 @@ if it should appear there.
 
 ## How to replace/add images
 
-There are currently **no real photo assets in this project** — every
-visual is either a solid color, a CSS gradient, or hand-built inline SVG
-(the decorative diamond motif in `components/Hero.tsx`, icon glyphs, etc.),
-by design, so the site never shipped with placeholder stock photography.
+The real Corland Partners logo lives at `public/images/logo/`:
+
+- `corland-partners-logo-horizontal.png` — icon + wordmark + tagline, transparent background. Used in `components/Header.tsx`.
+- `corland-partners-mark.png` / `corland-partners-mark-square.png` — icon mark only, transparent background. Used in `components/Footer.tsx`, `app/icon.png`, and `app/apple-icon.png` (Next.js's file-convention favicon/apple-touch-icon, auto-linked in `<head>` — no manual `<link>` tags needed).
+- `corland-partners-logo-stacked.png` — icon + stacked wordmark, transparent background. Not currently used, kept for future placements (e.g. a square social card).
+- `corland-partners-logo-wide.jpg` — full wide lockup on a white background. Not currently used.
+
+Beyond the logo, there are still **no real photography assets in this project** — every other visual is a solid color, a CSS gradient, or hand-built inline SVG (the decorative diamond motif in `components/Hero.tsx`, icon glyphs, etc.), by design, so the site never shipped with placeholder stock photography.
 
 To add real photography or other raster images:
 
@@ -208,5 +217,5 @@ To add real photography or other raster images:
 - `components/` — shared UI components
 - `content/` — typed content data (company info, pillars, services, FAQ, impact)
 - `lib/` — shared utilities (SEO metadata/JSON-LD helpers)
-- `public/` — static assets (currently empty — see **How to replace/add
-  images** above)
+- `public/` — static assets (currently just the logo — see **How to
+  replace/add images** above)

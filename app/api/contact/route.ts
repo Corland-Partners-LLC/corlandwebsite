@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+import { company } from "@/content/company";
 
 type ContactPayload = {
   name?: string;
@@ -52,18 +54,58 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false, errors }, { status: 400 });
   }
 
-  // TODO: Wire this up to a real email/CRM service (e.g. Resend, SendGrid,
-  // HubSpot) once credentials are available. For now we only validate the
-  // submission and acknowledge receipt — no email is actually sent.
-  //
-  // Example (Resend):
-  //   const resend = new Resend(process.env.RESEND_API_KEY);
-  //   await resend.emails.send({
-  //     from: "Corland Partners Website <no-reply@corlandpartners.com>",
-  //     to: "leland@corlandpartners.com",
-  //     subject: `New contact form submission from ${payload.name}`,
-  //     text: `...`,
-  //   });
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_EMAIL_FROM;
+
+  if (!apiKey || !from) {
+    console.error(
+      "Contact form: RESEND_API_KEY or RESEND_EMAIL_FROM is not configured — cannot send email.",
+    );
+    return NextResponse.json(
+      { success: false, error: "Email service is not configured." },
+      { status: 500 },
+    );
+  }
+
+  const name = payload.name!.trim();
+  const email = payload.email!.trim();
+  const phone = payload.phone?.trim();
+  const companyName = payload.company?.trim();
+  const message = payload.message!.trim();
+
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      from: `Corland Partners Website <${from}>`,
+      to: company.email,
+      replyTo: email,
+      subject: `New contact form submission from ${name}`,
+      text: [
+        `Name: ${name}`,
+        `Email: ${email}`,
+        phone ? `Phone: ${phone}` : null,
+        companyName ? `Company: ${companyName}` : null,
+        "",
+        message,
+      ]
+        .filter((line) => line !== null)
+        .join("\n"),
+    });
+
+    if (error) {
+      console.error("Contact form: Resend returned an error.", error);
+      return NextResponse.json(
+        { success: false, error: "Failed to send email." },
+        { status: 502 },
+      );
+    }
+  } catch (error) {
+    console.error("Contact form: failed to send email via Resend.", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to send email." },
+      { status: 502 },
+    );
+  }
 
   return NextResponse.json({ success: true }, { status: 200 });
 }

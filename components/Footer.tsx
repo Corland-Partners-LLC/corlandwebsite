@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Container from "./Container";
 import Button from "./Button";
 import { company } from "@/content/company";
@@ -19,7 +20,15 @@ export default function Footer() {
     <footer className="bg-charcoal text-neutral-300">
       <Container className="grid grid-cols-1 gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="font-heading text-lg font-extrabold text-white">
+          <Image
+            src="/images/logo/corland-partners-mark.png"
+            alt=""
+            aria-hidden="true"
+            width={526}
+            height={404}
+            className="h-10 w-auto"
+          />
+          <p className="mt-3 font-heading text-lg font-extrabold text-white">
             {company.name}
           </p>
           <p className="mt-3 text-sm leading-relaxed">{company.tagline}</p>
