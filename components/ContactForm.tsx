@@ -72,7 +72,10 @@ export default function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          ...values,
+          pageUrl: typeof window !== "undefined" ? window.location.href : undefined,
+        }),
       });
 
       if (!response.ok) {

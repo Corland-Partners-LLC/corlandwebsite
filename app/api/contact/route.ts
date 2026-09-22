@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { company } from "@/content/company";
+import { contactEmailHtml, contactEmailText } from "@/lib/contact-email";
 
 type ContactPayload = {
   name?: string;
@@ -8,6 +9,7 @@ type ContactPayload = {
   phone?: string;
   company?: string;
   message?: string;
+  pageUrl?: string;
 };
 
 type FieldErrors = Partial<Record<keyof ContactPayload, string>>;
@@ -75,6 +77,11 @@ export async function POST(request: NextRequest) {
   const phone = payload.phone?.trim();
   const companyName = payload.company?.trim();
   const message = payload.message!.trim();
+  // pageUrl is purely informational (which page the form was on) — trust
+  // but don't let a missing/odd value break the request.
+  const pageUrl = payload.pageUrl?.trim() || undefined;
+
+  const emailFields = { name, email, phone, companyName, message, pageUrl };
 
   try {
     const resend = new Resend(apiKey);
@@ -83,16 +90,8 @@ export async function POST(request: NextRequest) {
       to,
       replyTo: email,
       subject: `New contact form submission from ${name}`,
-      text: [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        phone ? `Phone: ${phone}` : null,
-        companyName ? `Company: ${companyName}` : null,
-        "",
-        message,
-      ]
-        .filter((line) => line !== null)
-        .join("\n"),
+      text: contactEmailText(emailFields),
+      html: contactEmailHtml(emailFields),
     });
 
     if (error) {
