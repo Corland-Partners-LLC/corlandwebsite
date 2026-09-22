@@ -29,6 +29,27 @@ export const metadata: Metadata = {
     template: "%s | Corland Partners",
   },
   description: company.heroSubhead,
+  // Fallback Open Graph / Twitter image for any route that doesn't call
+  // lib/seo.ts's pageMetadata() (e.g. the 404 page) — every route's
+  // metadata.images ultimately resolves to this branded default unless a
+  // page overrides it. pageMetadata() sets the same image explicitly for
+  // every real page.
+  openGraph: {
+    siteName: company.name,
+    type: "website",
+    images: [
+      {
+        url: "/images/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: `${company.name} — ${company.tagline}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/images/og-default.png"],
+  },
 };
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
