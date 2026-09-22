@@ -148,10 +148,14 @@ if it should appear there.
 
 ## How to replace/add images
 
-There are currently **no real photo assets in this project** — every
-visual is either a solid color, a CSS gradient, or hand-built inline SVG
-(the decorative diamond motif in `components/Hero.tsx`, icon glyphs, etc.),
-by design, so the site never shipped with placeholder stock photography.
+The real Corland Partners logo lives at `public/images/logo/`:
+
+- `corland-partners-logo-horizontal.png` — icon + wordmark + tagline, transparent background. Used in `components/Header.tsx`.
+- `corland-partners-mark.png` / `corland-partners-mark-square.png` — icon mark only, transparent background. Used in `components/Footer.tsx`, `app/icon.png`, and `app/apple-icon.png` (Next.js's file-convention favicon/apple-touch-icon, auto-linked in `<head>` — no manual `<link>` tags needed).
+- `corland-partners-logo-stacked.png` — icon + stacked wordmark, transparent background. Not currently used, kept for future placements (e.g. a square social card).
+- `corland-partners-logo-wide.jpg` — full wide lockup on a white background. Not currently used.
+
+Beyond the logo, there are still **no real photography assets in this project** — every other visual is a solid color, a CSS gradient, or hand-built inline SVG (the decorative diamond motif in `components/Hero.tsx`, icon glyphs, etc.), by design, so the site never shipped with placeholder stock photography.
 
 To add real photography or other raster images:
 
@@ -208,5 +212,5 @@ To add real photography or other raster images:
 - `components/` — shared UI components
 - `content/` — typed content data (company info, pillars, services, FAQ, impact)
 - `lib/` — shared utilities (SEO metadata/JSON-LD helpers)
-- `public/` — static assets (currently empty — see **How to replace/add
-  images** above)
+- `public/` — static assets (currently just the logo — see **How to
+  replace/add images** above)

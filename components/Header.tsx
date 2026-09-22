@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Container from "./Container";
 import Button from "./Button";
@@ -45,10 +46,17 @@ export default function Header() {
       <Container className="flex h-20 items-center justify-between gap-4">
         <Link
           href="/"
-          className="font-heading text-xl font-extrabold tracking-tight text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+          className="shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
           onClick={() => setIsMenuOpen(false)}
         >
-          {company.name}
+          <Image
+            src="/images/logo/corland-partners-logo-horizontal.png"
+            alt={`${company.name} — ${company.tagline}`}
+            width={1364}
+            height={500}
+            priority
+            className="h-12 w-auto sm:h-14"
+          />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
