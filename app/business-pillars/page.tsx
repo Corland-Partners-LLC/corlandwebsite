@@ -1,0 +1,42 @@
+import type { Metadata } from "next";
+import Container from "@/components/Container";
+import SectionHeading from "@/components/SectionHeading";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import PillarCard from "@/components/PillarCard";
+import CTASection from "@/components/CTASection";
+import { company } from "@/content/company";
+import { pillars } from "@/content/pillars";
+
+export const metadata: Metadata = {
+  title: "Business Pillars",
+  description: company.strategyIntro,
+};
+
+export default function BusinessPillarsPage() {
+  return (
+    <>
+      <Container>
+        <Breadcrumbs
+          items={[{ label: "Home", href: "/" }, { label: "Business Pillars" }]}
+        />
+      </Container>
+
+      <section className="py-12">
+        <Container>
+          <SectionHeading
+            kicker="Business Pillars"
+            heading="Four Pillars of a Healthy Business"
+            subhead={company.strategyIntro}
+          />
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {pillars.map((pillar) => (
+              <PillarCard key={pillar.slug} {...pillar} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <CTASection />
+    </>
+  );
+}
