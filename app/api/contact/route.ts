@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { company } from "@/content/company";
-import { contactEmailHtml, contactEmailText } from "@/lib/contact-email";
+import {
+  contactConfirmationHtml,
+  contactConfirmationText,
+  contactEmailHtml,
+  contactEmailText,
+} from "@/lib/contact-email";
 
 type ContactPayload = {
   name?: string;
@@ -106,6 +111,33 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { success: false, error: "Failed to send email." },
       { status: 502 },
+    );
+  }
+
+  // Best-effort visitor confirmation — the submission already succeeded
+  // above, so a failure here shouldn't fail the whole request or leave
+  // the visitor thinking their message wasn't received.
+  try {
+    const resend = new Resend(apiKey);
+    const { error } = await resend.emails.send({
+      from,
+      to: email,
+      replyTo: to,
+      subject: `We've received your message — ${company.name}`,
+      text: contactConfirmationText({ name, message }),
+      html: contactConfirmationHtml({ name, message, pageUrl }),
+    });
+
+    if (error) {
+      console.error(
+        "Contact form: failed to send visitor confirmation email.",
+        error,
+      );
+    }
+  } catch (error) {
+    console.error(
+      "Contact form: failed to send visitor confirmation email.",
+      error,
     );
   }
 
