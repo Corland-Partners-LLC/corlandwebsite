@@ -126,6 +126,10 @@ Whichever host is chosen, set `NEXT_PUBLIC_SITE_URL` to the real production
 domain so canonical URLs, the sitemap, and Open Graph/Twitter metadata are
 correct.
 
+`render.yaml` at the repo root is a ready-to-use Render Blueprint for this
+app (single Docker web service, no database — this site has none). See
+[`RENDER_DEPLOY.md`](./RENDER_DEPLOY.md) for the full setup/cutover steps.
+
 ## How to edit content
 
 All page copy lives in typed TypeScript modules under `content/`, not in
