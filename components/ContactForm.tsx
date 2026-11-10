@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
+import Link from "next/link";
 
 type FormState = {
   name: string;
@@ -8,6 +9,7 @@ type FormState = {
   phone: string;
   company: string;
   message: string;
+  smsConsent: boolean;
 };
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
@@ -18,6 +20,7 @@ const initialState: FormState = {
   phone: "",
   company: "",
   message: "",
+  smsConsent: false,
 };
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,6 +44,10 @@ function validate(values: FormState): FormErrors {
     errors.message = "Please tell us a bit more (at least 10 characters).";
   }
 
+  if (values.smsConsent && !values.phone.trim()) {
+    errors.phone = "Please enter your phone number to opt in to SMS messages.";
+  }
+
   return errors;
 }
 
@@ -55,6 +62,10 @@ export default function ContactForm() {
     return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setValues((prev) => ({ ...prev, [field]: event.target.value }));
     };
+  }
+
+  function handleSmsConsentChange(event: ChangeEvent<HTMLInputElement>) {
+    setValues((prev) => ({ ...prev, smsConsent: event.target.checked }));
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -166,8 +177,15 @@ export default function ContactForm() {
             autoComplete="tel"
             value={values.phone}
             onChange={handleChange("phone")}
+            aria-invalid={Boolean(errors.phone)}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
             className="mt-1 w-full rounded-md border border-navy-200 px-4 py-2 font-body text-navy-900 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy-200"
           />
+          {errors.phone ? (
+            <p id="phone-error" className="mt-1 text-sm text-red-600">
+              {errors.phone}
+            </p>
+          ) : null}
         </div>
         <div>
           <label htmlFor="company" className="block font-heading text-sm font-semibold text-navy-900">
@@ -183,6 +201,32 @@ export default function ContactForm() {
             className="mt-1 w-full rounded-md border border-navy-200 px-4 py-2 font-body text-navy-900 focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy-200"
           />
         </div>
+      </div>
+
+      <div className="flex items-start gap-3">
+        <input
+          id="smsConsent"
+          name="smsConsent"
+          type="checkbox"
+          checked={values.smsConsent}
+          onChange={handleSmsConsentChange}
+          className="mt-1 h-5 w-5 shrink-0 rounded border-navy-300 text-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
+        />
+        <label htmlFor="smsConsent" className="font-body text-sm leading-relaxed text-navy-700">
+          I agree to receive text messages from Corland Partners in response to my
+          inquiry, including customer service communications, appointment
+          coordination, and updates related to my request. Message frequency
+          varies. Message and data rates may apply. Reply STOP to unsubscribe or
+          HELP for assistance. Consent is not a condition of purchase. See our{" "}
+          <Link href="/privacy#text-messaging-sms-communications" className="underline hover:text-teal-700">
+            Privacy Policy
+          </Link>{" "}
+          and{" "}
+          <Link href="/terms#sms-terms-and-conditions" className="underline hover:text-teal-700">
+            SMS Terms
+          </Link>
+          .
+        </label>
       </div>
 
       <div>

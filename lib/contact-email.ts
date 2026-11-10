@@ -6,6 +6,7 @@ export type ContactEmailFields = {
   phone?: string;
   companyName?: string;
   message: string;
+  smsConsent?: boolean;
   pageUrl?: string;
 };
 
@@ -82,6 +83,7 @@ export function contactEmailText({
   phone,
   companyName,
   message,
+  smsConsent,
   pageUrl,
 }: ContactEmailFields): string {
   return [
@@ -89,6 +91,7 @@ export function contactEmailText({
     `Email: ${email}`,
     phone ? `Phone: ${phone}` : null,
     companyName ? `Company: ${companyName}` : null,
+    smsConsent ? "SMS consent: Yes — opted in to text messages" : null,
     pageUrl ? `Submitted from: ${pageUrl}` : null,
     "",
     message,
@@ -104,6 +107,7 @@ export function contactEmailHtml({
   phone,
   companyName,
   message,
+  smsConsent,
   pageUrl,
 }: ContactEmailFields): string {
   const siteUrl = resolveSiteOrigin(pageUrl);
@@ -114,6 +118,7 @@ export function contactEmailHtml({
     { label: "Email", value: email, href: `mailto:${email}` },
     phone ? { label: "Phone", value: phone, href: `tel:${phone}` } : null,
     companyName ? { label: "Company", value: companyName } : null,
+    smsConsent ? { label: "SMS consent", value: "Yes — opted in to text messages" } : null,
     pageUrl ? { label: "Submitted from", value: pageUrl, href: pageUrl } : null,
   ].filter((row): row is { label: string; value: string; href?: string } => row !== null);
 

@@ -28,7 +28,7 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: "Information We Collect",
       paragraphs: [
-        "When you submit our contact form, we collect the information you provide: your name, email address, message, and optionally your phone number and company name.",
+        "When you submit our contact form, we collect the information you provide: your name, email address, message, and optionally your phone number and company name. If you check the box to opt in to SMS messages, we also record that consent along with your phone number — see \"Text Messaging (SMS) Communications\" below.",
         "We do not currently use analytics, tracking cookies, or advertising pixels on this website. If that changes in the future, this policy will be updated accordingly.",
       ],
     },
@@ -36,6 +36,14 @@ export const privacyPolicy: LegalDocument = {
       heading: "How We Use Your Information",
       paragraphs: [
         "We use the information you submit solely to respond to your inquiry and follow up about our services. We do not sell or rent your information to third parties.",
+      ],
+    },
+    {
+      heading: "Text Messaging (SMS) Communications",
+      paragraphs: [
+        "If you check the SMS consent box when submitting an inquiry through our website or other forms, you agree to receive text messages from Corland Partners related to your request, including responses to inquiries, customer service communications, appointment coordination, and updates. Consent to receive text messages is not a condition of purchasing any service.",
+        "Message frequency varies. Message and data rates may apply. You can opt out at any time by replying STOP, or reply HELP for assistance.",
+        "We do not share your mobile number or SMS consent information with third parties or affiliates for marketing or promotional purposes.",
       ],
     },
     {
@@ -82,6 +90,13 @@ export const termsOfService: LegalDocument = {
       heading: "Use of This Website",
       paragraphs: [
         "This website provides general information about Corland Partners and our services to kingdom businesses. Nothing on this website constitutes a binding offer, a guarantee of business results, or professional financial, legal, or tax advice.",
+      ],
+    },
+    {
+      heading: "SMS Terms and Conditions",
+      paragraphs: [
+        "By checking the SMS consent box when submitting an inquiry through our website, you agree to receive text messages from Corland Partners. These messages may include responses to your inquiry, customer service communications, appointment coordination, and updates related to your request.",
+        "Message frequency varies. Message and data rates may apply. Reply STOP at any time to unsubscribe, or reply HELP for assistance. Consent to receive text messages is not a condition of purchasing any service.",
       ],
     },
     {

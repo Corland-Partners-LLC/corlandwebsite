@@ -1,5 +1,12 @@
 import type { LegalDocument as LegalDocumentType } from "@/content/legal";
 
+function slugify(heading: string): string {
+  return heading
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export default function LegalDocument({ title, effectiveDate, intro, sections }: LegalDocumentType) {
   return (
     <article>
@@ -18,7 +25,7 @@ export default function LegalDocument({ title, effectiveDate, intro, sections }:
 
       <div className="mt-10 space-y-10">
         {sections.map((section) => (
-          <section key={section.heading}>
+          <section key={section.heading} id={slugify(section.heading)} className="scroll-mt-24">
             <h2 className="font-heading text-xl font-bold text-navy-900">
               {section.heading}
             </h2>

@@ -14,6 +14,7 @@ type ContactPayload = {
   phone?: string;
   company?: string;
   message?: string;
+  smsConsent?: boolean;
   pageUrl?: string;
 };
 
@@ -38,6 +39,10 @@ function validate(payload: ContactPayload): FieldErrors {
     errors.message = "Please enter a message.";
   } else if (payload.message.trim().length < 10) {
     errors.message = "Please tell us a bit more (at least 10 characters).";
+  }
+
+  if (payload.smsConsent && (!payload.phone || !payload.phone.trim())) {
+    errors.phone = "Please enter your phone number to opt in to SMS messages.";
   }
 
   return errors;
@@ -82,11 +87,12 @@ export async function POST(request: NextRequest) {
   const phone = payload.phone?.trim();
   const companyName = payload.company?.trim();
   const message = payload.message!.trim();
+  const smsConsent = Boolean(payload.smsConsent);
   // pageUrl is purely informational (which page the form was on) — trust
   // but don't let a missing/odd value break the request.
   const pageUrl = payload.pageUrl?.trim() || undefined;
 
-  const emailFields = { name, email, phone, companyName, message, pageUrl };
+  const emailFields = { name, email, phone, companyName, message, smsConsent, pageUrl };
 
   try {
     const resend = new Resend(apiKey);
