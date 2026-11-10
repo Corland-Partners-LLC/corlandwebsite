@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { company } from "@/content/company";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://corlandpartners.com";
 
 /** Default Open Graph / Twitter card image, shared by every page that
  * doesn't supply its own. 1200x630 (the standard OG size), branded with

@@ -65,7 +65,7 @@ Copy `.env.example` to `.env.local` and fill in values as needed:
 
 - `NEXT_PUBLIC_SITE_URL` — canonical site URL, used for metadata/sitemap/
   robots generation (see `lib/seo.ts`, `app/sitemap.ts`, `app/robots.ts`).
-  Defaults to `https://www.corlandpartners.com` if unset, so a local/dev
+  Defaults to `https://corlandpartners.com` if unset, so a local/dev
   environment will still build without this set, but real canonical URLs,
   the sitemap, and Open Graph tags won't be correct until it points at the
   real deployed domain.

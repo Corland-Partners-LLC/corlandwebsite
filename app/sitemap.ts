@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { pillars } from "@/content/pillars";
 import { services } from "@/content/services";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://corlandpartners.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();

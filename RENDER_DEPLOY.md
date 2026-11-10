@@ -16,7 +16,7 @@ needs no changes to run on Render.
 | Variable | On Render | Why |
 |---|---|---|
 | `PORT` | `10000`, committed in `render.yaml` | Render's default web port |
-| `NEXT_PUBLIC_SITE_URL` | `https://www.corlandpartners.com`, committed in `render.yaml` | Canonical URL for metadata/sitemap/robots — safe to commit, not a secret |
+| `NEXT_PUBLIC_SITE_URL` | `https://corlandpartners.com`, committed in `render.yaml` | Canonical URL for metadata/sitemap/robots — safe to commit, not a secret |
 | `RESEND_API_KEY` | `sync: false` — set once in the Render dashboard | Secret |
 | `RESEND_EMAIL_FROM` | `sync: false` | Verified sender identity; not strictly secret but operational, so kept out of git |
 | `CONTACT_FORM_TO_EMAIL` | `sync: false`, optional | Same reasoning; falls back to `company.email` if unset (see `.env.example`) |

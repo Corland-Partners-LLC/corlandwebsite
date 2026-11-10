@@ -6,7 +6,7 @@ export type Crumb = {
 };
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://corlandpartners.com";
 
 export default function Breadcrumbs({ items }: { items: Crumb[] }) {
   const jsonLd = {

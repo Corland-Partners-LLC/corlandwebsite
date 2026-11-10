@@ -26,7 +26,7 @@ function resolveSiteOrigin(pageUrl?: string): string {
       // Not a valid absolute URL — fall through to the env fallback below.
     }
   }
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://corlandpartners.com";
 }
 
 function escapeHtml(value: string): string {
