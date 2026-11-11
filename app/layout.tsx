@@ -22,7 +22,7 @@ const varelaRound = Varela_Round({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com",
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://corlandpartners.com",
   ),
   title: {
     default: `${company.name} | ${company.tagline}`,
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   },
 };
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.corlandpartners.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://corlandpartners.com";
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
