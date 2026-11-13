@@ -57,6 +57,14 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle",
   );
+  // Spam defenses, invisible to real visitors: `website` is a honeypot field
+  // (hidden from sighted and AT users alike — bots that auto-fill every
+  // field they find in the markup fill it, real visitors never do) and
+  // `formRenderedAt` lets the server reject submissions sent implausibly
+  // fast after the page loaded (bots skip the time a human takes to read
+  // and type). Both are checked server-side in app/api/contact/route.ts.
+  const [website, setWebsite] = useState("");
+  const [formRenderedAt] = useState(() => Date.now());
 
   function handleChange(field: keyof FormState) {
     return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -85,6 +93,8 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
+          website,
+          ts: formRenderedAt,
           pageUrl: typeof window !== "undefined" ? window.location.href : undefined,
         }),
       });
@@ -121,6 +131,24 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      {/* Honeypot — hidden from sighted and assistive-tech users via
+          aria-hidden and off-screen positioning (not display:none/
+          visibility:hidden, which some bots detect and skip). Real
+          visitors never see or fill this; a non-empty value server-side
+          means the request wasn't a human using this form. */}
+      <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={website}
+          onChange={(event) => setWebsite(event.target.value)}
+        />
+      </div>
+
       <div>
         <label htmlFor="name" className="block font-heading text-sm font-semibold text-navy-900">
           Name <span aria-hidden="true">*</span>

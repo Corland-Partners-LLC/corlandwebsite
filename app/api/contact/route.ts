@@ -16,11 +16,51 @@ type ContactPayload = {
   message?: string;
   smsConsent?: boolean;
   pageUrl?: string;
+  // Spam defenses — see components/ContactForm.tsx for what sets these.
+  website?: string; // honeypot; a real visitor never fills this
+  ts?: number; // Date.now() when the form rendered client-side
 };
 
 type FieldErrors = Partial<Record<keyof ContactPayload, string>>;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Minimum plausible time (ms) between the form rendering and a human
+// submitting it. Bots that fill and submit forms programmatically are
+// almost always faster than this.
+const MIN_SUBMIT_DELAY_MS = 2500;
+
+// Per-IP submission rate limit. In-memory, so it resets on every deploy
+// or restart and doesn't share state across multiple instances — a
+// pragmatic first line of defense for a single-instance deployment, not
+// a durable/distributed limiter.
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const RATE_LIMIT_MAX_PER_WINDOW = 5;
+const submissionsByIp = new Map<string, number[]>();
+
+function getClientIp(request: NextRequest): string {
+  const cfConnectingIp = request.headers.get("cf-connecting-ip");
+  if (cfConnectingIp) {
+    return cfConnectingIp;
+  }
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim();
+  }
+  return "unknown";
+}
+
+/** Records this submission against the IP's window and reports whether
+ * that IP has now exceeded the allowed rate. */
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (submissionsByIp.get(ip) ?? []).filter(
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS,
+  );
+  recent.push(now);
+  submissionsByIp.set(ip, recent);
+  return recent.length > RATE_LIMIT_MAX_PER_WINDOW;
+}
 
 function validate(payload: ContactPayload): FieldErrors {
   const errors: FieldErrors = {};
@@ -58,6 +98,27 @@ export async function POST(request: NextRequest) {
       { success: false, errors: { message: "Invalid request body." } },
       { status: 400 },
     );
+  }
+
+  if (isRateLimited(getClientIp(request))) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Too many submissions from this network. Please try again later or contact us by phone.",
+      },
+      { status: 429 },
+    );
+  }
+
+  const honeypotFilled = Boolean(payload.website && payload.website.trim());
+  const submittedTooFast =
+    typeof payload.ts === "number" && Date.now() - payload.ts < MIN_SUBMIT_DELAY_MS;
+
+  if (honeypotFilled || submittedTooFast) {
+    // Quietly accept without validating or sending anything — looking
+    // identical to a real success response means a bot has no signal to
+    // adapt on.
+    return NextResponse.json({ success: true }, { status: 200 });
   }
 
   const errors = validate(payload);
